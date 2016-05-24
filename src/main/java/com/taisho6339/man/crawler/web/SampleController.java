@@ -1,17 +1,17 @@
 package com.taisho6339.man.crawler.web;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by taisho6339 on 16/05/25.
  */
-@Controller
+@RestController
 public class SampleController {
+
     @RequestMapping(path = "/")
-    public ModelAndView welcomeHandler() {
+    public String get() {
         String message = "Hello World.";
-        return new ModelAndView("index", "message", message);
+        return message;
     }
 }
