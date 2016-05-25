@@ -1,4 +1,4 @@
-package com.taisho6339.man.crawler.web;
+package com.taisho6339.man.crawler;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
