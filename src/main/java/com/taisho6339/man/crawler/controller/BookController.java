@@ -29,14 +29,15 @@ public class BookController {
 
     @ModelAttribute(value = "book")
     Book setUpForm() {
-        logger.debug("call setUpForm");
+        //Formに紐付けるために、使うページを開くときに返す
+        logger.error("call setUpForm");
         return new Book();
     }
 
     @RequestMapping(method = RequestMethod.GET)
     String list(Model model) {
-        logger.debug("call list");
-        logger.debug(model.toString());
+        logger.error("call list");
+        logger.error(model.getClass().getSimpleName());
         model.addAttribute("books", service.findAll());
         return "books/list";
     }
@@ -51,7 +52,7 @@ public class BookController {
         logger.error("create");
         logger.error(book.toString());
         logger.error(result.toString());
-        logger.error(model.toString());
+        logger.error(model.getClass().getSimpleName());
         if (result.hasErrors()) {
             model.addAttribute("book", book);
             return "books/create";
