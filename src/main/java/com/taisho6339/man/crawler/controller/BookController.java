@@ -1,6 +1,7 @@
 package com.taisho6339.man.crawler.controller;
 
 import com.taisho6339.man.crawler.model.Book;
+import com.taisho6339.man.crawler.model.BookJDBCComponent;
 import com.taisho6339.man.crawler.model.BookService;
 
 import org.slf4j.Logger;
@@ -24,6 +25,9 @@ public class BookController {
 
     @Autowired
     BookService service;
+
+    @Autowired
+    BookJDBCComponent bookjdbc;
 
     private static final Logger logger = LoggerFactory.getLogger(BookController.class);
 
@@ -49,10 +53,6 @@ public class BookController {
 
     @RequestMapping(value = "create", method = RequestMethod.POST)
     String create(@Validated Book book, BindingResult result, Model model) {
-        logger.error("create");
-        logger.error(book.toString());
-        logger.error(result.toString());
-        logger.error(model.getClass().getSimpleName());
         if (result.hasErrors()) {
             model.addAttribute("book", book);
             return "books/create";
@@ -94,5 +94,13 @@ public class BookController {
     @RequestMapping(value = {"update", "create"}, params = "goToTop", method = RequestMethod.POST)
     String gotoTop() {
         return "redirect:/books";
+    }
+
+    //デフォルトのgetと区別するためにtitleパラメータをもつものとしてフィルタリングしている
+    @RequestMapping(method = RequestMethod.GET, params = "title")
+    String search(Model model, @RequestParam String title) {
+        logger.error("reqparam:" + title);
+        model.addAttribute("books", bookjdbc.searchByTitle(title));
+        return "books/list";
     }
 }
