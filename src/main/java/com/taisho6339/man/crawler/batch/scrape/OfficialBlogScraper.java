@@ -1,4 +1,4 @@
-package com.taisho6339.man.crawler.scrape;
+package com.taisho6339.man.crawler.batch.scrape;
 
 import com.taisho6339.man.crawler.model.Article;
 import com.taisho6339.man.crawler.model.Employee;
@@ -16,13 +16,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import groovy.lang.Tuple2;
-import javafx.util.Pair;
 
 /**
  * Created by sakamohiroki on 2016/05/26.
  */
 @Component
-public class OfficialBlogScraper {
+public class OfficialBlogScraper implements Scraper {
 
     private static final String BLOG_URL = "http://recruit-tech.co.jp/news/media-release/";
 
