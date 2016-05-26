@@ -11,7 +11,7 @@
 <div layout:fragment="content" class="col-sm-12">
     <!-- BookControllerでbookという名前で登録したオブジェクトを表示する。 -->
     <!-- th:objectを使用することで、その中で省略記号が使用できるようになる。 *{isbn}は${book.isbn}と同じ -->
-    <form id="groupform" th:action="@{/books/create}" th:object="${book}" class="form-horizontal" method="post">
+    <form id="groupform" th:action="@{/create}" th:object="${book}" class="form-horizontal" method="post">
         <fieldset>
             <legend>登録</legend>
             <!-- fields.hasErrorsで入力値エラーがあった場合にcssを追加する -->

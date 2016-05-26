@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * Created by sakamohiroki on 2016/05/25.
  */
 @Controller
-@RequestMapping("books")
+@RequestMapping("/")
 public class BookController {
 
     @Autowired
