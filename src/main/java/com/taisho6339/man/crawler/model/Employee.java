@@ -22,10 +22,6 @@ public class Employee {
     @Size(max = 20)
     private String name;
 
-    @NotBlank
-    @Size(max = 100)
-    private String organization;
-
     public Long getId() {
         return id;
     }
@@ -42,14 +38,6 @@ public class Employee {
         this.name = name;
     }
 
-    public String getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(String organization) {
-        this.organization = organization;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,8 +46,7 @@ public class Employee {
         Employee employee = (Employee) o;
 
         if (id != null ? !id.equals(employee.id) : employee.id != null) return false;
-        if (name != null ? !name.equals(employee.name) : employee.name != null) return false;
-        return organization != null ? organization.equals(employee.organization) : employee.organization == null;
+        return name != null ? name.equals(employee.name) : employee.name == null;
 
     }
 
@@ -67,7 +54,14 @@ public class Employee {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (organization != null ? organization.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

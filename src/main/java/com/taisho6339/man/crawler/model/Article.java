@@ -32,6 +32,14 @@ public class Article {
         this.id = id;
     }
 
+    public Long getEmployee_id() {
+        return employee_id;
+    }
+
+    public void setEmployee_id(Long employee_id) {
+        this.employee_id = employee_id;
+    }
+
     public String getSummary() {
         return summary;
     }
@@ -46,16 +54,6 @@ public class Article {
 
     public void setAboutUrl(String aboutUrl) {
         this.aboutUrl = aboutUrl;
-    }
-
-    @Override
-    public String toString() {
-        return "Article{" +
-                "id=" + id +
-                ", employee_id=" + employee_id +
-                ", summary='" + summary + '\'' +
-                ", aboutUrl='" + aboutUrl + '\'' +
-                '}';
     }
 
     @Override
@@ -81,5 +79,15 @@ public class Article {
         result = 31 * result + (summary != null ? summary.hashCode() : 0);
         result = 31 * result + (aboutUrl != null ? aboutUrl.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", employee_id=" + employee_id +
+                ", summary='" + summary + '\'' +
+                ", aboutUrl='" + aboutUrl + '\'' +
+                '}';
     }
 }

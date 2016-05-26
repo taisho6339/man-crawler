@@ -13,7 +13,7 @@ spring:
         cache: false
 logging:
     level:
-        com.taisho6339.man.crawler.controller: INFO
+        com.taisho6339.man.crawler: INFO
         org.springframework.web: INFO
         org.hibernate.SQL: DEBUG
         org.hibernate.type: TRACE

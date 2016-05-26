@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,35 +15,41 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import groovy.lang.Tuple2;
+import javafx.util.Pair;
+
 /**
  * Created by sakamohiroki on 2016/05/26.
  */
+@Component
 public class OfficialBlogScraper {
 
     private static final String BLOG_URL = "http://recruit-tech.co.jp/news/media-release/";
 
-    public void scrape() {
+    public Tuple2<List<Employee>, List<Article>> scrape() {
+        Document document = null;
         List<Employee> employees = new ArrayList<>();
         List<Article> articles = new ArrayList<>();
 
+        //全体のHTML取得
         try {
-            Document document = Jsoup.connect(BLOG_URL).get();
-            Elements elements = document.getElementsByClass("media-release");
-            System.out.println("element size:" + elements.size());
-            System.out.println("employee size:" + employees.size());
-
-            for (Element element : elements) {
-                Article article = findArticleFromElement(element);
-                Employee employee = findEmployeeFromElement(element);
-                if (article == null || employee == null) {
-                    continue;
-                }
-                employees.add(employee);
-                articles.add(article);
-            }
+            document = Jsoup.connect(BLOG_URL).get();
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
+
+        Elements elements = document.getElementsByClass("media-release");
+        for (Element element : elements) {
+            Article article = findArticleFromElement(element);
+            Employee employee = findEmployeeFromElement(element);
+            if (employee != null) {
+                employees.add(employee);
+            }
+            articles.add(article);
+        }
+
+        return new Tuple2<>(employees, articles);
     }
 
     private Article findArticleFromElement(Element element) {
@@ -64,26 +71,24 @@ public class OfficialBlogScraper {
     private Employee findEmployeeFromElement(Element element) {
         Employee employee = new Employee();
         String desc = element.text();
-
-        String[] orgName = extractNameOrg(desc);
-        if (orgName == null || orgName.length != 2) {
-            return null;
+        //TODO 組織と名前が一緒になっている
+        String orgName = extractNameOrg(desc);
+        if (orgName != null) {
+            employee.setName(orgName);
         }
-        employee.setOrganization(orgName[0]);
-        employee.setName(orgName[1]);
-
         return employee;
     }
 
-    private String[] extractNameOrg(String desc) {
-//        desc = "弊社エンジニアの執筆した技術書が刊行されました。 ～ドキュメント作成システム構築ガイド[GitHub、RedPen、Asciidoctor、CIによる モダンライティング] ［アドバンスドテクノロジーラボ 伊藤敬彦］";
-        String regex = "(\\[(.+?)\\])|(［(.+)］)";
+    private String extractNameOrg(String desc) {
+        String regex = "(\\[(.+)\\])|(［(.+)］)";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(desc);
-        if (!m.find()) {
-            return null;
+
+        if (m.find()) {
+            System.out.println(m.group());
+            return m.group();
         }
-        return m.group().split("\\s+");
+        return null;
     }
 
 //    private Pair<List<Employee>, List<Article>> scrape
