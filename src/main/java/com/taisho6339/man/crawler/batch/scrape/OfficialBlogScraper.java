@@ -10,7 +10,6 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,6 +17,7 @@ import java.util.regex.Pattern;
 import groovy.lang.Tuple2;
 
 /**
+ * Tag情報、社員情報、記事情報をブログから収集する
  * Created by sakamohiroki on 2016/05/26.
  */
 @Component
@@ -25,32 +25,44 @@ public class OfficialBlogScraper implements Scraper {
 
     private static final String BLOG_URL = "http://recruit-tech.co.jp/news/media-release/";
 
-    public Tuple2<List<Employee>, List<Article>> scrape() {
-        Document document = null;
-        List<Employee> employees = new ArrayList<>();
-        List<Article> articles = new ArrayList<>();
-
+    private Document createBlogHtmlDoc() {
         //全体のHTML取得
         try {
-            document = Jsoup.connect(BLOG_URL).get();
+            return Jsoup.connect(BLOG_URL).get();
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Tuple2<List<Employee>, List<Article>> scrape() {
+        Document document = createBlogHtmlDoc();
+        if (document == null) {
             return null;
         }
 
         Elements elements = document.getElementsByClass("media-release");
         for (Element element : elements) {
-            Article article = findArticleFromElement(element);
-            Employee employee = findEmployeeFromElement(element);
-            if (employee != null) {
-                employees.add(employee);
-            }
-            articles.add(article);
+            findArticleFromElement(element);
+            String name = findEmployeeNameFromElement(element);
+            String tag = findTagFromElement(element);
+            System.out.println(name);
+            System.out.println(tag);
         }
 
-        return new Tuple2<>(employees, articles);
+        return null;
     }
 
+    //タグ情報の取得
+    private String findTagFromElement(Element element) {
+        Elements tagElements = element.getElementsByClass("mt2016_tag");
+        if (tagElements == null || tagElements.isEmpty()) {
+            return null;
+        }
+        return tagElements.get(0).text();
+    }
+
+    //記事情報の取得
     private Article findArticleFromElement(Element element) {
         Article article = new Article();
         String aboutUrl = "";
@@ -67,25 +79,22 @@ public class OfficialBlogScraper implements Scraper {
         return article;
     }
 
-    private Employee findEmployeeFromElement(Element element) {
-        Employee employee = new Employee();
+    //従業員情報の取得
+    private String findEmployeeNameFromElement(Element element) {
         String desc = element.text();
         //TODO 組織と名前が一緒になっている
-        String orgName = extractNameOrg(desc);
-        if (orgName != null) {
-            employee.setName(orgName);
-        }
-        return employee;
+        return extractNameOrg(desc);
     }
 
     private String extractNameOrg(String desc) {
-        String regex = "(\\[(.+)\\])|(［(.+)］)";
+        String regex = "(\\[(.+)\\s(.+)\\])|(［(.+)\\s(.+)］)";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(desc);
 
         if (m.find()) {
-            System.out.println(m.group());
-            return m.group();
+            String orgName = m.group();
+            orgName = orgName.replaceAll("[(\\[)(\\])［］]", "");
+            return orgName;
         }
         return null;
     }

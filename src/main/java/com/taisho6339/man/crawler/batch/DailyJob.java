@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
  * 日時実行Job群。主にデータを収集する
  * Created by sakamohiroki on 2016/05/26.
  */
-public class DailyCollecter {
+public class DailyJob {
 
     @Autowired
     ScrapingJob scrapingJob; //TODO DIで入れるようにする
