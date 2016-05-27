@@ -1,11 +1,14 @@
 package com.taisho6339.man.crawler.batch.scrape;
 
 import com.taisho6339.man.crawler.batch.common.CollectDataJob;
+import com.taisho6339.man.crawler.model.Topic;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * スクレイピングで得られたデータをDBに入れる
@@ -21,6 +24,9 @@ public class ScrapingJob implements CollectDataJob {
 
     @Override
     public void collectData() {
+        List<Topic> results = scraper.scrape();
+
+
         LOGGER.error("Call Scraping Job!!!!!!!!");
         System.out.println("Call Scraping Job!!!!!!!!");
     }

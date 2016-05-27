@@ -2,6 +2,8 @@ package com.taisho6339.man.crawler.batch.scrape;
 
 import com.taisho6339.man.crawler.model.Article;
 import com.taisho6339.man.crawler.model.Employee;
+import com.taisho6339.man.crawler.model.Tag;
+import com.taisho6339.man.crawler.model.Topic;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -10,11 +12,10 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import groovy.lang.Tuple2;
 
 /**
  * Tag情報、社員情報、記事情報をブログから収集する
@@ -35,7 +36,9 @@ public class OfficialBlogScraper implements Scraper {
         }
     }
 
-    public Tuple2<List<Employee>, List<Article>> scrape() {
+    public List<Topic> scrape() {
+        List<Topic> results = new ArrayList<>();
+
         Document document = createBlogHtmlDoc();
         if (document == null) {
             return null;
@@ -43,21 +46,26 @@ public class OfficialBlogScraper implements Scraper {
 
         Elements elements = document.getElementsByClass("media-release");
         for (Element element : elements) {
-            findArticleFromElement(element);
-            findEmployeeNameFromElement(element);
-            findTagFromElement(element);
+            Topic topic = new Topic();
+            topic.article = findArticleFromElement(element);
+            topic.employee = findEmployeeNameFromElement(element);
+            topic.tag = findTagFromElement(element);
+            results.add(topic);
         }
 
-        return null;
+        return results;
     }
 
     //タグ情報の取得
-    private String findTagFromElement(Element element) {
+    private Tag findTagFromElement(Element element) {
         Elements tagElements = element.getElementsByClass("mt2016_tag");
         if (tagElements == null || tagElements.isEmpty()) {
             return null;
         }
-        return tagElements.get(0).text();
+        String tagName = tagElements.get(0).text();
+        Tag tag = new Tag();
+        tag.setTagName(tagName);
+        return tag;
     }
 
     //記事情報の取得
@@ -94,9 +102,6 @@ public class OfficialBlogScraper implements Scraper {
         } else {
             employee.setName(employeeInfos[1]);
         }
-
-//        System.out.println(employee.getOrgName());
-        System.out.println(employee.getName());
 
         return employee;
     }
