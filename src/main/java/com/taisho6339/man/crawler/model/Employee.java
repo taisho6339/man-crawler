@@ -22,6 +22,17 @@ public class Employee {
     @Size(max = 20)
     private String name;
 
+    @Size(max = 100)
+    private String orgName;
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
+
     public Long getId() {
         return id;
     }
@@ -46,7 +57,8 @@ public class Employee {
         Employee employee = (Employee) o;
 
         if (id != null ? !id.equals(employee.id) : employee.id != null) return false;
-        return name != null ? name.equals(employee.name) : employee.name == null;
+        if (name != null ? !name.equals(employee.name) : employee.name != null) return false;
+        return orgName != null ? orgName.equals(employee.orgName) : employee.orgName == null;
 
     }
 
@@ -54,14 +66,7 @@ public class Employee {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (orgName != null ? orgName.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
     }
 }

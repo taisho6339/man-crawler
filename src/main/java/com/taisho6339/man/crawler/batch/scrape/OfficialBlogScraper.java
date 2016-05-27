@@ -44,10 +44,8 @@ public class OfficialBlogScraper implements Scraper {
         Elements elements = document.getElementsByClass("media-release");
         for (Element element : elements) {
             findArticleFromElement(element);
-            String name = findEmployeeNameFromElement(element);
-            String tag = findTagFromElement(element);
-            System.out.println(name);
-            System.out.println(tag);
+            findEmployeeNameFromElement(element);
+            findTagFromElement(element);
         }
 
         return null;
@@ -80,10 +78,27 @@ public class OfficialBlogScraper implements Scraper {
     }
 
     //従業員情報の取得
-    private String findEmployeeNameFromElement(Element element) {
+    private Employee findEmployeeNameFromElement(Element element) {
         String desc = element.text();
-        //TODO 組織と名前が一緒になっている
-        return extractNameOrg(desc);
+        String orgName = extractNameOrg(desc);
+        if (orgName == null) {
+            return null;
+        }
+
+        Employee employee = new Employee();
+        String[] employeeInfos = orgName.split("\\s");
+        employee.setOrgName(employeeInfos[0]);
+        //[組織名 名前]の構成になっていない場合
+        if (employeeInfos.length > 2) {
+            employee.setName(employeeInfos[employeeInfos.length - 1]);
+        } else {
+            employee.setName(employeeInfos[1]);
+        }
+
+//        System.out.println(employee.getOrgName());
+        System.out.println(employee.getName());
+
+        return employee;
     }
 
     private String extractNameOrg(String desc) {
@@ -98,6 +113,4 @@ public class OfficialBlogScraper implements Scraper {
         }
         return null;
     }
-
-//    private Pair<List<Employee>, List<Article>> scrape
 }
