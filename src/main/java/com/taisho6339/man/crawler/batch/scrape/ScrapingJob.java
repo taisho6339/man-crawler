@@ -34,7 +34,11 @@ public class ScrapingJob implements CollectDataJob {
             Employee employee = result.employee;
             Article article = result.article;
             Tag tag = result.tag;
-            System.out.println(employee.toString());
+
+            Employee registeredEmp = service.findByName(employee.getName());
+            if (registeredEmp != null) {
+                continue;
+            }
             service.save(employee);
         }
     }
