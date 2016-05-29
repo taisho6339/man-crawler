@@ -1,5 +1,8 @@
 package com.taisho6339.man.crawler;
 
+import com.taisho6339.man.crawler.batch.scrape.ScrapingJob;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -13,6 +16,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class Main extends SpringBootServletInitializer {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(Main.class);
@@ -20,6 +25,7 @@ public class Main extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class);
+        LOGGER.error("start server");
 //        OfficialBlogScraper scraper = new OfficialBlogScraper();
 //        scraper.scrape();
     }

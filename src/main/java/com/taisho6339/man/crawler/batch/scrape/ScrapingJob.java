@@ -25,9 +25,11 @@ public class ScrapingJob implements CollectDataJob {
     @Override
     public void collectData() {
         List<Topic> results = scraper.scrape();
-
+        Topic topic = results.get(0);
+        System.out.println(topic.employee.toString());
+        System.out.println(topic.article.toString());
+        System.out.println(topic.tag.toString());
 
         LOGGER.error("Call Scraping Job!!!!!!!!");
-        System.out.println("Call Scraping Job!!!!!!!!");
     }
 }
