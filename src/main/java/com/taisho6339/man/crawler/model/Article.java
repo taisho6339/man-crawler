@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by sakamohiroki on 2016/05/26.
@@ -17,8 +18,8 @@ public class Article {
     @GeneratedValue
     private Long id;
 
-    @NotBlank
-    private Long employee_id;
+    @NotNull
+    private Long empId;
 
     private String summary;
 
@@ -32,12 +33,12 @@ public class Article {
         this.id = id;
     }
 
-    public Long getEmployee_id() {
-        return employee_id;
+    public Long getEmpId() {
+        return empId;
     }
 
-    public void setEmployee_id(Long employee_id) {
-        this.employee_id = employee_id;
+    public void setEmpId(Long empId) {
+        this.empId = empId;
     }
 
     public String getSummary() {
@@ -64,7 +65,7 @@ public class Article {
         Article article = (Article) o;
 
         if (id != null ? !id.equals(article.id) : article.id != null) return false;
-        if (employee_id != null ? !employee_id.equals(article.employee_id) : article.employee_id != null)
+        if (empId != null ? !empId.equals(article.empId) : article.empId != null)
             return false;
         if (summary != null ? !summary.equals(article.summary) : article.summary != null)
             return false;
@@ -75,7 +76,7 @@ public class Article {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (employee_id != null ? employee_id.hashCode() : 0);
+        result = 31 * result + (empId != null ? empId.hashCode() : 0);
         result = 31 * result + (summary != null ? summary.hashCode() : 0);
         result = 31 * result + (aboutUrl != null ? aboutUrl.hashCode() : 0);
         return result;
@@ -85,7 +86,7 @@ public class Article {
     public String toString() {
         return "Article{" +
                 "id=" + id +
-                ", employee_id=" + employee_id +
+                ", empId=" + empId +
                 ", summary='" + summary + '\'' +
                 ", aboutUrl='" + aboutUrl + '\'' +
                 '}';

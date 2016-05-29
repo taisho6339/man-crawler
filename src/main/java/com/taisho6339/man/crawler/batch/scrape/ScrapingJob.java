@@ -3,8 +3,6 @@ package com.taisho6339.man.crawler.batch.scrape;
 import com.taisho6339.man.crawler.batch.common.CollectDataJob;
 import com.taisho6339.man.crawler.model.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +19,10 @@ public class ScrapingJob implements CollectDataJob {
     OfficialBlogScraper scraper;
 
     @Autowired
-    EmployeeService service;
+    EmployeeService employeeService;
+
+    @Autowired
+    ArticleService articleService;
 
     @Override
     public void collectData() {
@@ -32,14 +33,15 @@ public class ScrapingJob implements CollectDataJob {
 
         for (Topic result : results) {
             Employee employee = result.employee;
-            Article article = result.article;
-            Tag tag = result.tag;
-
-            Employee registeredEmp = service.findByName(employee.getName());
-            if (registeredEmp != null) {
-                continue;
+            Employee registeredEmp = employeeService.findByName(employee.getName());
+            if (registeredEmp == null) {
+                registeredEmp = employeeService.save(employee);
             }
-            service.save(employee);
+
+            Article article = result.article;
+            article.setEmpId(registeredEmp.getId());
+            articleService.save(article);
+            Tag tag = result.tag;
         }
     }
 }
