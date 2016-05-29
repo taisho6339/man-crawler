@@ -47,8 +47,12 @@ public class OfficialBlogScraper implements Scraper {
         Elements elements = document.getElementsByClass("media-release");
         for (Element element : elements) {
             Topic topic = new Topic();
-            topic.article = findArticleFromElement(element);
+            //社員が取れていない場合は情報を捨てる
             topic.employee = findEmployeeNameFromElement(element);
+            if (topic.employee == null) {
+                continue;
+            }
+            topic.article = findArticleFromElement(element);
             topic.tag = findTagFromElement(element);
             results.add(topic);
         }
@@ -92,7 +96,6 @@ public class OfficialBlogScraper implements Scraper {
         if (orgName == null) {
             return null;
         }
-
         Employee employee = new Employee();
         String[] employeeInfos = orgName.split("\\s");
         employee.setOrgName(employeeInfos[0]);

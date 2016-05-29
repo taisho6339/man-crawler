@@ -1,5 +1,8 @@
 package com.taisho6339.man.crawler.controller;
 
+import com.taisho6339.man.crawler.model.Employee;
+import com.taisho6339.man.crawler.model.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,12 +17,11 @@ import java.util.Map;
 @RequestMapping(value = "/api")
 public class TopController {
 
+    @Autowired
+    EmployeeService service;
+
     @RequestMapping("/list")
-    public Map<String, List> employeeList() {
-        Map<String, List> res = new HashMap<>();
-//        Tuple2<List<Employee>, List<Article>> pair = service.findInfo();
-//        res.put("employees", pair.getFirst());
-//        res.put("articles", pair.getSecond());
-        return res;
+    public List<Employee> employeeList() {
+        return service.findAll();
     }
 }

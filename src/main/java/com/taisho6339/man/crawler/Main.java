@@ -25,8 +25,7 @@ public class Main extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class);
-        LOGGER.error("start server");
-//        OfficialBlogScraper scraper = new OfficialBlogScraper();
-//        scraper.scrape();
+//        ScrapingJob job = new ScrapingJob();
+//        job.collectData();
     }
 }

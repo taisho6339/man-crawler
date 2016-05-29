@@ -1,7 +1,7 @@
 package com.taisho6339.man.crawler.batch.scrape;
 
 import com.taisho6339.man.crawler.batch.common.CollectDataJob;
-import com.taisho6339.man.crawler.model.Topic;
+import com.taisho6339.man.crawler.model.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,20 +16,26 @@ import java.util.List;
  */
 @Component
 public class ScrapingJob implements CollectDataJob {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingJob.class);
-
     //TODO DIで入れるようにする
     @Autowired
     OfficialBlogScraper scraper;
 
+    @Autowired
+    EmployeeService service;
+
     @Override
     public void collectData() {
         List<Topic> results = scraper.scrape();
-        Topic topic = results.get(0);
-        System.out.println(topic.employee.toString());
-        System.out.println(topic.article.toString());
-        System.out.println(topic.tag.toString());
+        if (results == null || results.isEmpty()) {
+            return;
+        }
 
-        LOGGER.error("Call Scraping Job!!!!!!!!");
+        for (Topic result : results) {
+            Employee employee = result.employee;
+            Article article = result.article;
+            Tag tag = result.tag;
+            System.out.println(employee.toString());
+            service.save(employee);
+        }
     }
 }
