@@ -27,4 +27,8 @@ public class EmployeeService {
     public Employee findByName(String name) {
         return repository.findByName(name);
     }
+
+    public List<Employee> findLikeByName(String name) {
+        return repository.findLikeByName(name);
+    }
 }
