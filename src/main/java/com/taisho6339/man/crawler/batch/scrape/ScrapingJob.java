@@ -32,15 +32,18 @@ public class ScrapingJob implements CollectDataJob {
         }
 
         for (Topic result : results) {
+            //社員登録
             Employee employee = result.employee;
             Employee registeredEmp = employeeService.findByName(employee.getName());
             if (registeredEmp == null) {
                 registeredEmp = employeeService.save(employee);
             }
 
+            //記事登録
             Article article = result.article;
             article.setEmpId(registeredEmp.getId());
             articleService.save(article);
+
             Tag tag = result.tag;
         }
     }

@@ -25,6 +25,9 @@ public class TopController {
     @Autowired
     EmployeeService employeeService;
 
+    @Autowired
+    ArticleService articleService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String index() {
         return "index";
@@ -37,10 +40,15 @@ public class TopController {
         return "emplist";
     }
 
+    @RequestMapping(value = "articles/{emp_id}")
+    public String articles(Model model, @PathVariable Long emp_id) {
+        List<Article> articles = articleService.findByEmpId(emp_id);
+        model.addAttribute("articles", articles);
+        return "articles";
+    }
+
 //
 //
-//    @Autowired
-//    ArticleService articleService;
 //
 //    @RequestMapping("/list")
 //    public List<Employee> employeeList() {

@@ -80,9 +80,13 @@ public class OfficialBlogScraper implements Scraper {
 
         Elements linkElements = element.getElementsByClass("cf");
         if (linkElements != null && !linkElements.isEmpty()) {
-            aboutUrl = element.getElementsByClass("cf").get(0).attr("href");
+            aboutUrl = linkElements.get(0).attr("href");
         }
-        summary = element.text();
+
+        Elements descElements = element.getElementsByClass("desc");
+        if (descElements != null && !descElements.isEmpty()) {
+            summary = descElements.get(0).text();
+        }
 
         article.setAboutUrl(aboutUrl);
         article.setSummary(summary);
