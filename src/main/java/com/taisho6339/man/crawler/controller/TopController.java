@@ -1,9 +1,10 @@
 package com.taisho6339.man.crawler.controller;
 
 import com.taisho6339.man.crawler.model.Article;
-import com.taisho6339.man.crawler.service.ArticleService;
 import com.taisho6339.man.crawler.model.Employee;
+import com.taisho6339.man.crawler.service.ArticleService;
 import com.taisho6339.man.crawler.service.EmployeeService;
+import com.taisho6339.man.crawler.service.TagService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,9 @@ public class TopController {
     @Autowired
     ArticleService articleService;
 
+    @Autowired
+    TagService tagService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String index() {
         return "index";
@@ -47,16 +51,9 @@ public class TopController {
         return "articles";
     }
 
-//
-//
-//
-//    @RequestMapping("/list")
-//    public List<Employee> employeeList() {
-//        return employeeService.findAll();
-//    }
-//
-//    @RequestMapping("/articles/{emp_id}")
-//    public List<Article> articleList(@PathVariable Long emp_id) {
-//        return articleService.findByEmpId(emp_id);
-//    }
+    @RequestMapping(value = "tags")
+    public String tags(Model model) {
+        model.addAttribute("tags", tagService.findAll());
+        return "tags";
+    }
 }

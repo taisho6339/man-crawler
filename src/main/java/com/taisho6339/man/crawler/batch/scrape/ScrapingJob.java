@@ -56,14 +56,18 @@ public class ScrapingJob implements CollectDataJob {
 
             //タグの登録
             Tag tag = result.tag;
+            if (tag == null) {
+                continue;
+            }
+
             Tag resultTag = tagService.findByName(tag.getTagName());
             if (resultTag == null) {
-                tag = tagService.save(tag);
+                resultTag = tagService.save(tag);
             }
 
             //タグと社員の関連を登録
             TagEmployeeRel tagEmployeeRel = new TagEmployeeRel();
-            tagEmployeeRel.setTagId(tag.getId());
+            tagEmployeeRel.setTagId(resultTag.getId());
             tagEmployeeRel.setEmpId(registeredEmp.getId());
             tagEmployeeRel = tagRelService.save(tagEmployeeRel);
         }

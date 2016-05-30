@@ -6,6 +6,8 @@ import com.taisho6339.man.crawler.model.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by sakamohiroki on 2016/05/30.
  */
@@ -14,8 +16,12 @@ public class TagService {
     @Autowired
     private TagRepository tagRepository;
 
+    public List<Tag> findAll() {
+        return tagRepository.findAll();
+    }
+
     public Tag findByName(String name) {
-        return tagRepository.findByName(name);
+        return tagRepository.findByTagName(name);
     }
 
     public Tag save(Tag tag) {

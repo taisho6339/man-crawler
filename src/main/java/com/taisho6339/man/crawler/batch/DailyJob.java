@@ -16,8 +16,14 @@ public class DailyJob {
     @Autowired
     ScrapingJob scrapingJob; //TODO DIで入れるようにする
 
-    @Scheduled(cron = "30 * * * * *") //TODO どこかで一括管理するようにする
+    private static boolean isCollected = false; //TODO 暫定
+
+    @Scheduled(cron = "* * * * * *") //TODO どこかで一括管理するようにする
     public void runJob() {
+        if (isCollected) {
+            return;
+        }
         scrapingJob.collectData();
+        isCollected = true;
     }
 }

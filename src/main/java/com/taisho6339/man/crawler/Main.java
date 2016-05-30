@@ -1,6 +1,5 @@
 package com.taisho6339.man.crawler;
 
-import com.taisho6339.man.crawler.batch.scrape.ScrapingJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -25,7 +24,5 @@ public class Main extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class);
-//        ScrapingJob job = new ScrapingJob();
-//        job.collectData();
     }
 }
