@@ -9,6 +9,7 @@ import com.taisho6339.man.crawler.service.TagRelService;
 import com.taisho6339.man.crawler.service.TagService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 /**
@@ -26,16 +28,19 @@ import java.util.List;
 public class TopController {
 
     @Autowired
-    EmployeeService employeeService;
+    private EmployeeService employeeService;
 
     @Autowired
-    ArticleService articleService;
+    private ArticleService articleService;
 
     @Autowired
-    TagService tagService;
+    private TagService tagService;
 
     @Autowired
-    TagRelService tagRelService;
+    private TagRelService tagRelService;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @RequestMapping(method = RequestMethod.GET)
     public String index() {
@@ -64,14 +69,26 @@ public class TopController {
 
     @RequestMapping(value = "tag/{tagId}")
     public String tagEmp(Model model, @PathVariable Long tagId) {
-        List<TagEmployeeRel> rels = tagRelService.findByTagId(tagId);
-        for (TagEmployeeRel rel : rels) {
-            System.out.println(rel.getTagId());
-            List<Employee> employees = rel.getEmployees();
-            for (Employee employee : employees) {
-                System.out.println(employee.toString());
-            }
-        }
+        List<Employee> employees = jdbcTemplate.query("SELECT * " +
+                        "FROM M_EMPLOYEE AS E " +
+                        "INNER JOIN (SELECT * FROM T_TAG_EMP_REL WHERE T_TAG_EMP_REL.tag_id = ?) AS T " +
+                        "ON E.id = T.emp_id", new Object[]{tagId},
+                (ResultSet rs, int i) -> {
+                    Employee employee = new Employee();
+                    employee.setId(rs.getLong("emp_id"));
+                    employee.setName(rs.getString("name"));
+                    employee.setOrgName(rs.getString("org_name"));
+                    return employee;
+                });
+        model.addAttribute("employees", employees);
+//        List<TagEmployeeRel> rels = tagRelService.findByTagId(tagId);
+//        for (TagEmployeeRel rel : rels) {
+//            List<Employee> employees = rel.getEmployees();
+//            System.out.println("size:" + employees.size());
+//            for (Employee employee : employees) {
+//                System.out.println(employee.toString());
+//            }
+//        }
         return "emplist";
     }
 }

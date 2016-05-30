@@ -52,7 +52,7 @@ public class ScrapingJob implements CollectDataJob {
             //記事登録
             Article article = result.article;
             article.setEmpId(registeredEmp.getId());
-            article = articleService.save(article);
+            articleService.save(article);
 
             //タグの登録
             Tag tag = result.tag;
@@ -60,16 +60,20 @@ public class ScrapingJob implements CollectDataJob {
                 continue;
             }
 
-            Tag resultTag = tagService.findByName(tag.getTagName());
-            if (resultTag == null) {
-                resultTag = tagService.save(tag);
+            Tag registeredTag = tagService.findByName(tag.getTagName());
+            if (registeredTag == null) {
+                registeredTag = tagService.save(tag);
             }
 
             //タグと社員の関連を登録
+            TagEmployeeRel registeredRel = tagRelService.findByTagIdAndEmpId(registeredTag.getId(), registeredEmp.getId());
+            if (registeredRel != null) {
+                continue;
+            }
             TagEmployeeRel tagEmployeeRel = new TagEmployeeRel();
-            tagEmployeeRel.setTagId(resultTag.getId());
+            tagEmployeeRel.setTagId(registeredTag.getId());
             tagEmployeeRel.setEmpId(registeredEmp.getId());
-            tagEmployeeRel = tagRelService.save(tagEmployeeRel);
+            tagRelService.save(tagEmployeeRel);
         }
     }
 }

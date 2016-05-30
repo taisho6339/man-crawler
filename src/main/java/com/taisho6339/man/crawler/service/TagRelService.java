@@ -23,4 +23,8 @@ public class TagRelService {
     public List<TagEmployeeRel> findByTagId(Long tagId) {
         return tagRelRepository.findByTagId(tagId);
     }
+
+    public TagEmployeeRel findByTagIdAndEmpId(Long tagId, Long empId) {
+        return tagRelRepository.findByTagIdAndEmpId(tagId, empId);
+    }
 }

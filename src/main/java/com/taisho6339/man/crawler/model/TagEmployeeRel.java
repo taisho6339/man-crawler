@@ -2,13 +2,7 @@ package com.taisho6339.man.crawler.model;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -27,8 +21,8 @@ public class TagEmployeeRel {
     @NotNull
     private Long tagId;
 
-    @ManyToMany(targetEntity = Employee.class)
-    @JoinColumn(name = "id")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id", insertable = false, updatable = false)
     private List<Employee> employees;
 
     public List<Employee> getEmployees() {
