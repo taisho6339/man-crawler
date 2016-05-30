@@ -1,9 +1,9 @@
 package com.taisho6339.man.crawler.controller;
 
 import com.taisho6339.man.crawler.model.Article;
-import com.taisho6339.man.crawler.model.ArticleService;
+import com.taisho6339.man.crawler.service.ArticleService;
 import com.taisho6339.man.crawler.model.Employee;
-import com.taisho6339.man.crawler.model.EmployeeService;
+import com.taisho6339.man.crawler.service.EmployeeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

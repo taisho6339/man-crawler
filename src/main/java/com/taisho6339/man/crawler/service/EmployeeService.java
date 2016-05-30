@@ -1,4 +1,7 @@
-package com.taisho6339.man.crawler.model;
+package com.taisho6339.man.crawler.service;
+
+import com.taisho6339.man.crawler.model.Employee;
+import com.taisho6339.man.crawler.model.EmployeeRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -2,6 +2,10 @@ package com.taisho6339.man.crawler.batch.scrape;
 
 import com.taisho6339.man.crawler.batch.common.CollectDataJob;
 import com.taisho6339.man.crawler.model.*;
+import com.taisho6339.man.crawler.service.ArticleService;
+import com.taisho6339.man.crawler.service.EmployeeService;
+import com.taisho6339.man.crawler.service.TagRelService;
+import com.taisho6339.man.crawler.service.TagService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,6 +28,12 @@ public class ScrapingJob implements CollectDataJob {
     @Autowired
     ArticleService articleService;
 
+    @Autowired
+    TagService tagService;
+
+    @Autowired
+    TagRelService tagRelService;
+
     @Override
     public void collectData() {
         List<Topic> results = scraper.scrape();
@@ -42,9 +52,20 @@ public class ScrapingJob implements CollectDataJob {
             //記事登録
             Article article = result.article;
             article.setEmpId(registeredEmp.getId());
-            articleService.save(article);
+            article = articleService.save(article);
 
+            //タグの登録
             Tag tag = result.tag;
+            Tag resultTag = tagService.findByName(tag.getTagName());
+            if (resultTag == null) {
+                tag = tagService.save(tag);
+            }
+
+            //タグと社員の関連を登録
+            TagEmployeeRel tagEmployeeRel = new TagEmployeeRel();
+            tagEmployeeRel.setTagId(tag.getId());
+            tagEmployeeRel.setEmpId(registeredEmp.getId());
+            tagEmployeeRel = tagRelService.save(tagEmployeeRel);
         }
     }
 }
