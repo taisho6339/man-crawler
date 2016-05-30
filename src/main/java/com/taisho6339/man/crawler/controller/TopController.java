@@ -2,8 +2,10 @@ package com.taisho6339.man.crawler.controller;
 
 import com.taisho6339.man.crawler.model.Article;
 import com.taisho6339.man.crawler.model.Employee;
+import com.taisho6339.man.crawler.model.TagEmployeeRel;
 import com.taisho6339.man.crawler.service.ArticleService;
 import com.taisho6339.man.crawler.service.EmployeeService;
+import com.taisho6339.man.crawler.service.TagRelService;
 import com.taisho6339.man.crawler.service.TagService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class TopController {
     @Autowired
     TagService tagService;
 
+    @Autowired
+    TagRelService tagRelService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String index() {
         return "index";
@@ -55,5 +60,18 @@ public class TopController {
     public String tags(Model model) {
         model.addAttribute("tags", tagService.findAll());
         return "tags";
+    }
+
+    @RequestMapping(value = "tag/{tagId}")
+    public String tagEmp(Model model, @PathVariable Long tagId) {
+        List<TagEmployeeRel> rels = tagRelService.findByTagId(tagId);
+        for (TagEmployeeRel rel : rels) {
+            System.out.println(rel.getTagId());
+            List<Employee> employees = rel.getEmployees();
+            for (Employee employee : employees) {
+                System.out.println(employee.toString());
+            }
+        }
+        return "emplist";
     }
 }

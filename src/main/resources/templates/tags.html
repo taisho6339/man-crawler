@@ -21,7 +21,7 @@
 
         <tr th:each="tag : ${tags}">
             <td th:text="${tag.id}">100</td>
-            <td><a th:href="${'/tag/'+tag.tagName}" th:text="${tag.tagName}">name</a></td>
+            <td><a th:href="${'/tag/'+tag.id}" th:text="${tag.tagName}">name</a></td>
         </tr>
     </table>
 </div>
