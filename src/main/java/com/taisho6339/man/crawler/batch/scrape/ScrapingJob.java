@@ -2,10 +2,12 @@ package com.taisho6339.man.crawler.batch.scrape;
 
 import com.taisho6339.man.crawler.batch.common.CollectDataJob;
 import com.taisho6339.man.crawler.model.Article;
+import com.taisho6339.man.crawler.model.EmpTagRelation;
 import com.taisho6339.man.crawler.model.Employee;
 import com.taisho6339.man.crawler.model.Tag;
 import com.taisho6339.man.crawler.model.Topic;
 import com.taisho6339.man.crawler.service.ArticleService;
+import com.taisho6339.man.crawler.service.EmpTagRelationService;
 import com.taisho6339.man.crawler.service.EmployeeService;
 import com.taisho6339.man.crawler.service.TagService;
 
@@ -13,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * スクレイピングで得られたデータをDBに入れる
@@ -36,6 +36,9 @@ public class ScrapingJob implements CollectDataJob {
     @Autowired
     TagService tagService;
 
+    @Autowired
+    EmpTagRelationService empTagRelationService;
+
     @Override
     public void collectData() {
         List<Topic> results = scraper.scrape();
@@ -53,7 +56,7 @@ public class ScrapingJob implements CollectDataJob {
         //タグの登録
         Tag tag = result.tag;
         if (tag == null) {
-            throw new NotFoundScrapeDataException("Not Found Tag Data.");
+            return;
         }
 
         Tag registeredTag = tagService.findByName(tag.getTagName());
@@ -74,28 +77,13 @@ public class ScrapingJob implements CollectDataJob {
         articleService.save(article);
 
         //タグと社員の関連を登録
-        Set<Tag> tags = registeredEmp.getTags();
-        Set<Employee> employees = registeredTag.getEmployees();
-        if (tags == null) {
-            tags = new HashSet<>();
+        EmpTagRelation empTagRelation = empTagRelationService.findByTagIdAndEmpId(registeredTag.getId(), registeredEmp.getId());
+        if (empTagRelation != null) {
+            return;
         }
-
-        if (employees == null) {
-            employees = new HashSet<>();
-        }
-
-        tags.add(registeredTag);
-        employees.add(registeredEmp);
-        registeredEmp.setTags(tags);
-        registeredTag.setEmployees(employees);
-
-        employeeService.save(registeredEmp);
-        tagService.save(registeredTag);
-    }
-
-    private static class NotFoundScrapeDataException extends RuntimeException {
-        NotFoundScrapeDataException(String message) {
-            super(message);
-        }
+        empTagRelation = new EmpTagRelation();
+        empTagRelation.setEmpId(registeredEmp.getId());
+        empTagRelation.setTagId(registeredTag.getId());
+        empTagRelationService.save(empTagRelation);
     }
 }

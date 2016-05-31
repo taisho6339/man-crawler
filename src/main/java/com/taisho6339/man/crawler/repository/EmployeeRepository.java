@@ -1,4 +1,6 @@
-package com.taisho6339.man.crawler.model;
+package com.taisho6339.man.crawler.repository;
+
+import com.taisho6339.man.crawler.model.Employee;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

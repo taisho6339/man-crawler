@@ -1,4 +1,6 @@
-package com.taisho6339.man.crawler.model;
+package com.taisho6339.man.crawler.repository;
+
+import com.taisho6339.man.crawler.model.Tag;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

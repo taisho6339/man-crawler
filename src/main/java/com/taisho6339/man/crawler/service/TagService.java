@@ -1,7 +1,7 @@
 package com.taisho6339.man.crawler.service;
 
 import com.taisho6339.man.crawler.model.Tag;
-import com.taisho6339.man.crawler.model.TagRepository;
+import com.taisho6339.man.crawler.repository.TagRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

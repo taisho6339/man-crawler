@@ -21,9 +21,6 @@ public class TopController {
     @Autowired
     private TagService tagService;
 
-//    @Autowired
-//    private JdbcTemplate jdbcTemplate;
-
     @RequestMapping(method = RequestMethod.GET)
     public String index(Model model) {
         List<Tag> tags = tagService.findAll();
