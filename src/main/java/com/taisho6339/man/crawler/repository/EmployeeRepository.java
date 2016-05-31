@@ -18,4 +18,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     @Query(name = "Employee.findLikeByName")
     public List<Employee> findLikeByName(@Param("name") String name);
+
+    @Query(name = "Employee.findEmpByTagId")
+    public List<Employee> findByTagId(@Param("tag_id") Long tagId);
 }

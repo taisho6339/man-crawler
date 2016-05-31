@@ -41,16 +41,17 @@ public class EmployeeService {
     }
 
     public List<Employee> findEmployeesBytagId(Long tagId) {
-        return jdbcTemplate.query("SELECT * " +
-                        "FROM M_EMPLOYEE AS E " +
-                        "INNER JOIN (SELECT * FROM T_TAG_EMP_REL WHERE T_TAG_EMP_REL.tag_id = ?) AS T " +
-                        "ON E.id = T.emp_id", new Object[]{tagId},
-                (ResultSet rs, int i) -> {
-                    Employee employee = new Employee();
-                    employee.setId(rs.getLong("emp_id"));
-                    employee.setName(rs.getString("name"));
-                    employee.setOrgName(rs.getString("org_name"));
-                    return employee;
-                });
+//        return jdbcTemplate.query("SELECT * " +
+//                        "FROM M_EMPLOYEE AS E " +
+//                        "INNER JOIN (SELECT * FROM T_EMP_TAG WHERE T_EMP_TAG.tag_id = ?) AS T " +
+//                        "ON E.id = T.emp_id", new Object[]{tagId},
+//                (ResultSet rs, int i) -> {
+//                    Employee employee = new Employee();
+//                    employee.setId(rs.getLong("emp_id"));
+//                    employee.setName(rs.getString("name"));
+//                    employee.setOrgName(rs.getString("org_name"));
+//                    return employee;
+//                });
+        return repository.findByTagId(tagId);
     }
 }
