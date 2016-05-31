@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DailyJob {
-
     @Autowired
     ScrapingJob scrapingJob; //TODO DIで入れるようにする
 
