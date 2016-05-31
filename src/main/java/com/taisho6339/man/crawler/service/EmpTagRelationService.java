@@ -17,13 +17,16 @@ public class EmpTagRelationService {
     @Autowired
     private EmpTagRelationRepository empTagRelationRepository;
 
-
     public EmpTagRelation save(EmpTagRelation relation) {
         return empTagRelationRepository.save(relation);
     }
 
     public List<EmpTagRelation> findByTagId(Long tagId) {
         return empTagRelationRepository.findByTagId(tagId);
+    }
+
+    public List<EmpTagRelation> findByEmpId(Long empId) {
+        return empTagRelationRepository.findByEmpId(empId);
     }
 
     public EmpTagRelation findByTagIdAndEmpId(Long tagId, Long empId) {

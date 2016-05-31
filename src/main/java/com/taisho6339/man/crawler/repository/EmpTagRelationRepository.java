@@ -15,6 +15,8 @@ import java.util.List;
 public interface EmpTagRelationRepository extends JpaRepository<EmpTagRelation, Long> {
     public List<EmpTagRelation> findByTagId(Long tagId);
 
+    public List<EmpTagRelation> findByEmpId(Long empId);
+
     @Query(name = "EmpTagRelation.findByTagIdAndEmpId")
     public EmpTagRelation findByTagIdAndEmpId(@Param("tag_id") Long tagId, @Param("emp_id") Long empId);
 }

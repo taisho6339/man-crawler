@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * Created by sakamohiroki on 2016/05/26.
  */
 @Entity
-@Table(name = "T_TAG")
+@Table(name = "M_TAG")
 public class Tag {
     @Id
     @GeneratedValue

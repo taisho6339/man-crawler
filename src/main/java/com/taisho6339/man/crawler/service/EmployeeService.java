@@ -28,6 +28,10 @@ public class EmployeeService {
         return repository.save(employee);
     }
 
+    public Employee findById(Long id) {
+        return repository.findById(id);
+    }
+
     public List<Employee> findAll() {
         return repository.findAll();
     }
