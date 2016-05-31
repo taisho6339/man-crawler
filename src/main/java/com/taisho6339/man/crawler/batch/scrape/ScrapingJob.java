@@ -50,6 +50,17 @@ public class ScrapingJob implements CollectDataJob {
 
     @Transactional
     private void saveTopicInfo(Topic result) {
+        //タグの登録
+        Tag tag = result.tag;
+        if (tag == null) {
+            throw new NotFoundScrapeDataException("Not Found Tag Data.");
+        }
+
+        Tag registeredTag = tagService.findByName(tag.getTagName());
+        if (registeredTag == null) {
+            registeredTag = tagService.save(tag);
+        }
+
         //社員登録
         Employee employee = result.employee;
         Employee registeredEmp = employeeService.findByName(employee.getName());
@@ -61,17 +72,6 @@ public class ScrapingJob implements CollectDataJob {
         Article article = result.article;
         article.setEmpId(registeredEmp.getId());
         articleService.save(article);
-
-        //タグの登録
-        Tag tag = result.tag;
-        if (tag == null) {
-            throw new NotFoundScrapeDataException("Not Found Tag Data.");
-        }
-
-        Tag registeredTag = tagService.findByName(tag.getTagName());
-        if (registeredTag == null) {
-            registeredTag = tagService.save(tag);
-        }
 
         //タグと社員の関連を登録
         Set<Tag> tags = registeredEmp.getTags();
