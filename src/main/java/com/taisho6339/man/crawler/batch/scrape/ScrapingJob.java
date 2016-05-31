@@ -65,7 +65,7 @@ public class ScrapingJob implements CollectDataJob {
         //タグの登録
         Tag tag = result.tag;
         if (tag == null) {
-            throw new AddDataException();
+            throw new NotFoundScrapeDataException();
         }
 
         Tag registeredTag = tagService.findByName(tag.getTagName());
@@ -93,6 +93,6 @@ public class ScrapingJob implements CollectDataJob {
         tagService.save(registeredTag);
     }
 
-    private static class AddDataException extends RuntimeException {
+    private static class NotFoundScrapeDataException extends RuntimeException {
     }
 }
