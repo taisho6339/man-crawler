@@ -26,7 +26,7 @@ public class Tag {
     @NotBlank
     private String tagName;
 
-    @ManyToMany(mappedBy = "tags", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.EAGER)
     private Set<Employee> employees;
 
     public Set<Employee> getEmployees() {
