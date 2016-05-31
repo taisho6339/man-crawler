@@ -24,6 +24,10 @@ public class TagService {
         return tagRepository.findByTagName(name);
     }
 
+    public Tag findById(Long id) {
+        return tagRepository.findById(id);
+    }
+
     public Tag save(Tag tag) {
         return tagRepository.save(tag);
     }

@@ -2,9 +2,14 @@ package com.taisho6339.man.crawler.model;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
@@ -19,6 +24,17 @@ public class Tag {
 
     @NotBlank
     private String tagName;
+
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.EAGER)
+    private Set<Employee> employees;
+
+    public Set<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
+    }
 
     public Long getId() {
         return id;

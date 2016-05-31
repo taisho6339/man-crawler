@@ -2,12 +2,14 @@ package com.taisho6339.man.crawler.service;
 
 import com.taisho6339.man.crawler.model.Employee;
 import com.taisho6339.man.crawler.model.EmployeeRepository;
+import com.taisho6339.man.crawler.model.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by taisho6339 on 16/05/30.
