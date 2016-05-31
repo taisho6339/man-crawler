@@ -13,7 +13,7 @@
 
 <div layout:fragment="content" class="col-sm-12">
 
-    <form th:action="@{/search}" method="get">
+    <form th:action="@{/emp/search}" method="get">
         <div class="form-group">
             <input class="form-control" type="text" name="keyword"/>
             <input class="btn btn-default" type="submit" value="検索"/>
@@ -29,7 +29,7 @@
 
         <tr th:each="employee : ${employees}">
             <td th:text="${employee.id}">100</td>
-            <td><a th:href="${'/articles/'+employee.id}" th:text="${employee.name}">name</a></td>
+            <td><a th:href="${'/article/'+employee.id}" th:text="${employee.name}">name</a></td>
             <td th:text="${employee.orgName}">所属組織名</td>
         </tr>
     </table>
