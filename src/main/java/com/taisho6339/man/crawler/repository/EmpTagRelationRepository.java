@@ -2,6 +2,7 @@ package com.taisho6339.man.crawler.repository;
 
 import com.taisho6339.man.crawler.model.EmpTagRelation;
 
+import com.taisho6339.man.crawler.model.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

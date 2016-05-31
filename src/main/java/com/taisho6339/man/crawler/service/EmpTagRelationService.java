@@ -1,6 +1,7 @@
 package com.taisho6339.man.crawler.service;
 
 import com.taisho6339.man.crawler.model.EmpTagRelation;
+import com.taisho6339.man.crawler.model.Employee;
 import com.taisho6339.man.crawler.repository.EmpTagRelationRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;

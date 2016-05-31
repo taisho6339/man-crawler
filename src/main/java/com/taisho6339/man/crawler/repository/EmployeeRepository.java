@@ -18,10 +18,4 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     @Query(name = "Employee.findLikeByName")
     public List<Employee> findLikeByName(@Param("name") String name);
-
-    @Query(name = "SELECT * FROM M_EMPLOYEE AS E INNER JOIN (SELECT * FROM T_EMP_TAG WHERE T_EMP_TAG.tag_id)\" +\n" +
-            "//                        \"FROM M_EMPLOYEE AS E \" +\n" +
-            "//                        \"INNER JOIN (SELECT * FROM T_EMP_TAG WHERE T_EMP_TAG.tag_id = ?) AS T \" +\n" +
-            "//                        \"ON E.id = T.emp_id")
-    public List<Employee> findByTagId(@Param("tag_id") Long tagId);
 }

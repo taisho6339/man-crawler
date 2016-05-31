@@ -2,16 +2,9 @@ package com.taisho6339.man.crawler.model;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
