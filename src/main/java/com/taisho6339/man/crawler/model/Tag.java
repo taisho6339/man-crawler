@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,7 +26,7 @@ public class Tag {
     @NotBlank
     private String tagName;
 
-    @ManyToMany(mappedBy = "tags", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Employee> employees;
 
     public Set<Employee> getEmployees() {
