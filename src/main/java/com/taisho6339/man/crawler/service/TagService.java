@@ -44,7 +44,7 @@ public class TagService {
                         "ON T.id = R.tag_id", new Object[]{emp_id},
                 (ResultSet rs, int i) -> {
                     Tag tag = new Tag();
-                    tag.setId(rs.getLong("id"));
+                    tag.setId(rs.getLong("tag_id"));
                     tag.setTagName(rs.getString("tag_name"));
                     return tag;
                 });
