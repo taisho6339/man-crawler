@@ -1,5 +1,6 @@
 package com.taisho6339.man.crawler.controller;
 
+import com.taisho6339.man.crawler.controller.request.SearchRequest;
 import com.taisho6339.man.crawler.model.Employee;
 import com.taisho6339.man.crawler.service.EmpTagRelationService;
 import com.taisho6339.man.crawler.service.EmployeeService;
@@ -8,11 +9,11 @@ import com.taisho6339.man.crawler.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -33,9 +34,18 @@ public class EmployeeController {
         return "emplist";
     }
 
-    @RequestMapping(value = "search", params = "keyword", method = RequestMethod.GET)
-    public String search(Model model, @RequestParam String keyword) {
-        List<Employee> employees = employeeService.findLikeByName(keyword);
+    @RequestMapping(value = "search", method = RequestMethod.GET)
+    public String search(Model model, @ModelAttribute("keyword") @Valid SearchRequest keyword, BindingResult result) {
+        if (result.hasErrors()) {
+            System.out.println("too large!!!!");
+            for (FieldError fieldError : result.getFieldErrors()) {
+                System.out.println(fieldError.getField());
+                System.out.println(fieldError.getCode());
+            }
+            return "index";
+        }
+
+        List<Employee> employees = employeeService.findLikeByName(keyword.getQuery());
         model.addAttribute("employees", employees);
         return "emplist";
     }
