@@ -15,9 +15,9 @@
 
 <div layout:fragment="content" class="col-sm-12" align="center">
 
-    <form th:action="@{/emp/search}" method="get" th:object="${keyword}">
+    <form th:action="@{/emp/search}" method="get">
         <div class="form-group">
-            <input class="form-control" type="text" th:field="*{query}"/>
+            <input class="form-control" type="text" th:field="*{keyword.query}"/>
             <input class="btn btn-default" type="submit" value="検索"/>
         </div>
     </form>

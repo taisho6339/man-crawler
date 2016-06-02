@@ -2,7 +2,6 @@ package com.taisho6339.man.crawler.controller;
 
 import com.taisho6339.man.crawler.controller.request.SearchRequest;
 import com.taisho6339.man.crawler.model.Employee;
-import com.taisho6339.man.crawler.service.EmpTagRelationService;
 import com.taisho6339.man.crawler.service.EmployeeService;
 import com.taisho6339.man.crawler.service.TagService;
 
@@ -11,10 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.List;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * Created by sakamohiroki on 2016/05/31.
@@ -35,7 +38,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "search", method = RequestMethod.GET)
-    public String search(Model model, @ModelAttribute("keyword") @Valid SearchRequest keyword, BindingResult result) {
+    public String search(Model model, @ModelAttribute("keyword") @Valid SearchRequest searchRequest, BindingResult result) {
         if (result.hasErrors()) {
             System.out.println("too large!!!!");
             for (FieldError fieldError : result.getFieldErrors()) {
@@ -45,7 +48,7 @@ public class EmployeeController {
             return "index";
         }
 
-        List<Employee> employees = employeeService.findLikeByName(keyword.getQuery());
+        List<Employee> employees = employeeService.findLikeByName(searchRequest.getQuery());
         model.addAttribute("employees", employees);
         return "emplist";
     }
